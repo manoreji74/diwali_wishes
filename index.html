@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>✨ Magical Diwali Surprise ✨</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Marcellus&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================
+           ROOT THEME & RESET
+           ========================================================== */
+        :root {
+            --bg-midnight: #0b0112;
+            --bg-purple-deep: #1a0426;
+            --bg-maroon-deep: #2e051d;
+            --bg-maroon-rich: #4d0b28;
+            --gold-light: #fff4cc;
+            --gold-primary: #ffd700;
+            --gold-warm: #ffb703;
+            --gold-dark: #b8860b;
+            --amber: #fb8500;
+            --ruby: #d90429;
+            --emerald: #06d6a0;
+            --text-glow: 0 0 12px rgba(255, 215, 0, 0.7), 0 0 28px rgba(255, 136, 0, 0.5);
+            --box-gold-glow: 0 0 25px rgba(255, 200, 50, 0.45);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Marcellus', 'Georgia', serif;
+            background: var(--bg-midnight);
+            color: #fff9ea;
+            min-height: 100vh;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            position: relative;
+        }
+
+        /* Ambient festive backdrop */
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 50% 0%, #430c31 0%, transparent 60%),
+                radial-gradient(circle at 20% 80%, #290430 0%, transparent 50%),
+                radial-gradient(circle at 80% 85%, #3d081f 0%, transparent 50%),
+                linear-gradient(160deg, #12021a 0%, #200424 40%, #2e051d 75%, #0b0112 100%);
+        }
+
+        /* Traditional Toran / Hanging Marigolds at top */
+        .festive-toran {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 38px;
+            pointer-events: none;
+            z-index: 40;
+            display: flex;
+            justify-content: space-around;
+            background: linear-gradient(to bottom, rgba(30, 4, 25, 0.9), transparent);
+            overflow: hidden;
+        }
+
+        .toran-flower {
+            display: inline-block;
+            font-size: 1.25rem;
+            animation: toranSway 3.5s ease-in-out infinite alternate;
+            transform-origin: top center;
+            filter: drop-shadow(0 4px 6px rgba(255, 160, 0, 0.4));
+        }
+
+        .toran-flower:nth-child(2n) {
+            animation-duration: 4.2s;
+            animation-delay: 0.6s;
+        }
+        .toran-flower:nth-child(3n) {
+            animation-duration: 3s;
+            animation-delay: 1.2s;
+        }
+
+        @keyframes toranSway {
+            from { transform: rotate(-5deg); }
+            to { transform: rotate(5deg); }
+        }
+
+        /* FLOATING SOUND CONTROLLER */
+        #soundToggle {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 1000;
+            background: rgba(45, 8, 30, 0.85);
+            border: 1.5px solid var(--gold-primary);
+            color: var(--gold-light);
+            padding: 9px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 0 18px rgba(255, 189, 66, 0.5), inset 0 0 8px rgba(255, 215, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        #soundToggle:hover {
+            transform: scale(1.06);
+            background: rgba(75, 14, 48, 0.95);
+            box-shadow: 0 0 28px rgba(255, 215, 0, 0.8);
+        }
+
+        #soundToggle.muted {
+            opacity: 0.6;
+            border-color: #887;
+            color: #bbb;
+            box-shadow: none;
+        }
+
+        /* SPARKLER & INTERACTION CANVAS */
+        #sparklerCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 90;
+        }
+
+        /* PAGE ARCHITECTURE & TRANSITIONS */
+        .page {
+            min-height: 100vh;
+            width: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 70px 20px 80px;
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(12px) scale(0.98);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .page.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .content-card {
+            width: 100%;
+            max-width: 940px;
+            position: relative;
+            z-index: 2;
+            background: radial-gradient(circle at center, rgba(62, 10, 42, 0.45) 0%, rgba(20, 3, 27, 0.65) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.28);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.65), inset 0 0 35px rgba(255, 200, 50, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 40px 28px;
+            margin: auto;
+        }
+
+        /* TYPOGRAPHY */
+        h1.festive-title {
+            font-family: 'Cinzel Decorative', cursive, serif;
+            font-size: clamp(2.1rem, 6.5vw, 3.8rem);
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff9e6 0%, #ffd700 45%, #ff9500 85%, #ff5e00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 18px rgba(255, 180, 0, 0.65));
+            line-height: 1.22;
+        }
+
+        h2.festive-subtitle {
+            font-family: 'Marcellus', serif;
+            color: #ffe8b2;
+            font-size: clamp(1.3rem, 4.2vw, 2.1rem);
+            margin-bottom: 16px;
+            text-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
+            letter-spacing: 0.5px;
+        }
+
+        p.wishes-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.02rem, 3.2vw, 1.26rem);
+            line-height: 1.95;
+            color: #fff2dd;
+            max-width: 820px;
+            margin: 16px auto;
+            font-weight: 300;
+            letter-spacing: 0.25px;
+            white-space: pre-line;
+            min-height: 3.5em;
+        }
+
+        /* ANIMATED STETHOSCOPE CURSOR */
+        .stetho-cursor {
+            display: inline-block;
+            font-size: 1.25em;
+            margin-left: 4px;
+            vertical-align: baseline;
+            filter: drop-shadow(0 0 8px rgba(255, 75, 130, 0.85)) drop-shadow(0 0 16px rgba(255, 215, 0, 0.7));
+            animation: stethoPulse 0.9s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+            transform-origin: center bottom;
+        }
+
+        @keyframes stethoPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            20% { transform: scale(1.35) rotate(-10deg); }
+            40% { transform: scale(1.1) rotate(8deg); }
+            60% { transform: scale(1.28) rotate(-4deg); }
+        }
+
+        /* TRADITIONAL DIYA COMPONENT (3D Clay & Flickering Flame) */
+        .diya-wrapper {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 15px auto;
+        }
+
+        .diya-flame {
+            width: 16px;
+            height: 28px;
+            background: linear-gradient(to bottom, #ffffff 0%, #ffff77 25%, #ff9900 65%, #ff3300 100%);
+            border-radius: 50% 50% 20% 20% / 80% 80% 20% 20%;
+            box-shadow:
+                0 0 15px #ffaa00,
+                0 0 30px #ff6600,
+                0 0 45px rgba(255, 215, 0, 0.8);
+            animation: flameFlicker 1.2s ease-in-out infinite alternate;
+            transform-origin: center bottom;
+            margin-bottom: -5px;
+            z-index: 2;
+        }
+
+        @keyframes flameFlicker {
+            0% { transform: scaleY(1) scaleX(1) rotate(-2deg); }
+            50% { transform: scaleY(1.18) scaleX(0.88) rotate(3deg); }
+            100% { transform: scaleY(0.92) scaleX(1.08) rotate(-1deg); }
+        }
+
+        .diya-pot {
+            width: 58px;
+            height: 24px;
+            background: radial-gradient(ellipse at 50% 30%, #e07a36, #963510 65%, #591b07);
+            border-radius: 0 0 50px 50px;
+            border-top: 3px solid #ffbe76;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6), inset 0 -3px 8px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .diya-pot::after {
+            content: "✨";
+            position: absolute;
+            font-size: 10px;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.75;
+        }
+
+        /* FLOATING FESTIVE DECORATIONS */
+        .decor {
+            position: absolute;
+            font-size: clamp(28px, 5vw, 44px);
+            animation: floatingDecor 4.2s ease-in-out infinite;
+            filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.75));
+            cursor: pointer;
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
+        }
+
+        .decor:hover {
+            transform: scale(1.35) rotate(12deg);
+        }
+
+        @keyframes floatingDecor {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(6deg); }
+        }
+
+        .d-tl { top: 8%; left: 6%; }
+        .d-tr { top: 12%; right: 7%; animation-delay: 1.2s; }
+        .d-bl { bottom: 8%; left: 7%; animation-delay: 2.1s; }
+        .d-br { bottom: 10%; right: 6%; animation-delay: 0.8s; }
+
+        /* BUTTONS */
+        .btn-celebrate {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border: 2px solid #ffe299;
+            border-radius: 50px;
+            padding: 16px 42px;
+            margin-top: 32px;
+            background: linear-gradient(135deg, #ffc43a 0%, #ff8c00 50%, #d8311b 100%);
+            color: #380802;
+            font-size: clamp(1.05rem, 3.2vw, 1.25rem);
+            font-family: 'Cinzel Decorative', cursive, serif;
+            font-weight: 900;
+            letter-spacing: 1.2px;
+            cursor: pointer;
+            box-shadow:
+                0 0 25px rgba(255, 160, 20, 0.75),
+                0 8px 25px rgba(0, 0, 0, 0.45),
+                inset 0 2px 8px rgba(255, 255, 255, 0.6);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-celebrate::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+            transform: rotate(25deg) translateY(-100%);
+            transition: transform 0.7s ease;
+        }
+
+        .btn-celebrate:hover::before {
+            transform: rotate(25deg) translateY(100%);
+        }
+
+        .btn-celebrate:hover {
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.95), 0 12px 30px rgba(0,0,0,0.55);
+            border-color: #ffffff;
+        }
+
+        .btn-celebrate:active {
+            transform: scale(0.97) translateY(1px);
+        }
+
+        /* WELCOME SCREEN ENTER BUTTON SPECIAL GLOW */
+        .btn-enter {
+            animation: pulseEnter 2s infinite alternate;
+        }
+
+        @keyframes pulseEnter {
+            0% { box-shadow: 0 0 22px rgba(255, 180, 0, 0.6), 0 0 45px rgba(255, 90, 0, 0.4); }
+            100% { box-shadow: 0 0 38px rgba(255, 225, 50, 0.9), 0 0 70px rgba(255, 90, 0, 0.75); }
+        }
+
+        /* ==========================================================
+           SWEETS SECTION: SINGLE LARGE GOLDEN TRAY + 42+ LADDOOS
+           ========================================================== */
+        .tray-section {
+            width: 100%;
+            margin: 22px auto;
+        }
+
+        .royal-tray {
+            width: min(98%, 880px);
+            margin: 20px auto;
+            padding: 35px 22px 28px;
+            border-radius: 46px;
+            background:
+                radial-gradient(ellipse at 50% 35%, #ffd277 0%, #d48b28 45%, #8c420b 80%, #542203 100%);
+            border: 8px ridge #ffeaa7;
+            box-shadow:
+                0 0 35px rgba(255, 185, 45, 0.6),
+                0 0 75px rgba(255, 110, 0, 0.35),
+                inset 0 0 30px rgba(255, 245, 180, 0.65),
+                0 18px 40px rgba(0, 0, 0, 0.7);
+            position: relative;
+        }
+
+        .royal-tray-header {
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #3d0a00;
+            padding: 6px 24px;
+            border-radius: 25px;
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 900;
+            font-size: clamp(0.78rem, 2.5vw, 1rem);
+            letter-spacing: 1.5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 15px gold;
+            white-space: nowrap;
+            border: 2px solid #fff2a8;
+        }
+
+        .laddoo-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+            max-width: 820px;
+            margin: 10px auto;
+            padding: 10px 4px;
+        }
+
+        .laddoo {
+            width: clamp(42px, 6.6vw, 60px);
+            height: clamp(42px, 6.6vw, 60px);
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 32% 28%, #fff0a8 0%, #ffc53a 35%, #e67e00 70%, #9e4304 95%);
+            border: 1.5px solid #ffa929;
+            box-shadow:
+                inset -4px -5px 7px rgba(110, 40, 2, 0.75),
+                inset 3px 3px 6px rgba(255, 255, 200, 0.8),
+                0 6px 8px rgba(0, 0, 0, 0.45);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s;
+            animation: laddooBreathe 3.5s ease-in-out infinite;
+        }
+
+        .laddoo:nth-child(even) {
+            animation-delay: 0.6s;
+        }
+        .laddoo:nth-child(3n) {
+            animation-delay: 1.2s;
+        }
+
+        @keyframes laddooBreathe {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .laddoo:hover, .laddoo:active {
+            transform: scale(1.3) translateY(-8px);
+            filter: brightness(1.2) drop-shadow(0 0 12px gold);
+            z-index: 10;
+        }
+
+        /* Boondi texture & pistachios */
+        .laddoo::before {
+            content: "";
+            position: absolute;
+            top: 18%;
+            left: 22%;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #2d6a4f; /* Pistachio speck */
+            box-shadow:
+                14px 6px 0 -1px #ffd700,
+                8px 16px 0 -1px #800e13,
+                18px 18px 0 -1.5px #2d6a4f,
+                -2px 14px 0 -1px #ffffff;
+            opacity: 0.85;
+        }
+
+        .tray-footer-note {
+            margin-top: 14px;
+            font-size: 0.95rem;
+            color: #fff6d9;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+        }
+
+        /* ACCOMPANYING SWEETS DISPLAY (Jalebi, Gulab Jamun, Kaju Katli) */
+        .side-sweets-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            max-width: 860px;
+            margin: 25px auto 10px;
+            width: 100%;
+        }
+
+        .sweet-card {
+            background: radial-gradient(circle at center, rgba(82, 16, 50, 0.7), rgba(28, 4, 32, 0.85));
+            border: 1.5px solid rgba(255, 215, 0, 0.35);
+            border-radius: 20px;
+            padding: 16px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sweet-card:hover {
+            transform: translateY(-8px) scale(1.04);
+            border-color: #ffd700;
+            box-shadow: 0 12px 28px rgba(255, 180, 0, 0.45);
+        }
+
+        .sweet-icon-art {
+            font-size: 3.2rem;
+            margin-bottom: 6px;
+            filter: drop-shadow(0 0 10px rgba(255, 200, 50, 0.6));
+            animation: sweetFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes sweetFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .sweet-name {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.15rem;
+            color: #ffe5a3;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .sweet-desc {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.84rem;
+            color: #eed5b7;
+            line-height: 1.4;
+        }
+
+        /* ==========================================================
+           GIFTS SECTION (4 UNIQUE SPECIAL GIFT BOXES)
+           ========================================================== */
+        .gifts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 880px;
+            margin: 28px auto 10px;
+        }
+
+        .gift-box-card {
+            background: radial-gradient(circle at top, rgba(78, 14, 48, 0.8), rgba(22, 3, 26, 0.9));
+            border: 2px solid rgba(255, 215, 0, 0.35);
+            border-radius: 24px;
+            padding: 24px 18px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .gift-box-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: #ffd700;
+            box-shadow: 0 14px 35px rgba(255, 175, 30, 0.5);
+        }
+
+        .gift-tag {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #ffd875;
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            padding: 3px 12px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .gift-box-visual {
+            font-size: 4.8rem;
+            margin: 12px 0;
+            filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.65));
+            animation: giftWobble 2.5s ease-in-out infinite;
+            transition: transform 0.3s;
+        }
+
+        @keyframes giftWobble {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            30% { transform: translateY(-8px) rotate(-4deg); }
+            70% { transform: translateY(-4px) rotate(4deg); }
+        }
+
+        .gift-box-card.opened .gift-box-visual {
+            animation: none;
+            transform: scale(1.1);
+        }
+
+        .gift-tap-hint {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            color: #ffd57e;
+            font-weight: 600;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #ff9e00, #e85d04);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* REVEALED CONTENT INSIDE GIFT */
+        .gift-revealed-content {
+            display: none;
+            animation: giftUnfold 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            text-align: center;
+            width: 100%;
+        }
+
+        @keyframes giftUnfold {
+            from { opacity: 0; transform: scale(0.85) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .gift-title-rev {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.15rem;
+            color: #ffe6a0;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .gift-text-rev {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #fff2db;
+        }
+
+        /* ==========================================================
+           FULLSCREEN FIREWORKS SHOW OVERLAY (FOR SKY, FLOWER, BOMB, FINALE)
+           ========================================================== */
+        #fireworksOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 500;
+            background: #040108;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #fireworksCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #fireworksHeading {
+            position: relative;
+            z-index: 10;
+            font-family: 'Cinzel Decorative', cursive, serif;
+            font-size: clamp(2rem, 7vw, 3.8rem);
+            font-weight: 900;
+            color: #ffe285;
+            text-align: center;
+            padding: 20px;
+            text-shadow: 0 0 25px #ff7b00, 0 0 50px #ff0055, 0 0 75px #ffd700;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            pointer-events: none;
+            letter-spacing: 1px;
+        }
+
+        /* ==========================================================
+           FINAL PAGE & SIGNATURE (STRICTLY FINAL PAGE ONLY!)
+           ========================================================== */
+        .glowing-final-heart {
+            font-size: clamp(4.5rem, 12vw, 7rem);
+            margin: 15px auto;
+            display: inline-block;
+            filter: drop-shadow(0 0 25px rgba(255, 50, 100, 0.85)) drop-shadow(0 0 50px rgba(255, 215, 0, 0.7));
+            animation: finalHeartBeating 1.4s ease-in-out infinite;
+        }
+
+        @keyframes finalHeartBeating {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.22); }
+            30% { transform: scale(1.08); }
+            45% { transform: scale(1.28); }
+        }
+
+        /* EXCLUSIVE SIGNATURE - ONLY ON PAGE #final */
+        .exclusive-signature {
+            position: absolute;
+            bottom: 22px;
+            right: 28px;
+            color: #ffe58f;
+            font-family: 'Cinzel Decorative', cursive, serif;
+            font-size: clamp(1rem, 2.8vw, 1.35rem);
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-shadow: 0 0 12px gold, 0 0 25px orange;
+            animation: signatureAura 2s ease-in-out infinite alternate;
+            z-index: 20;
+        }
+
+        @keyframes signatureAura {
+            from { opacity: 0.75; text-shadow: 0 0 8px gold, 0 0 15px #ff7b00; }
+            to { opacity: 1; text-shadow: 0 0 22px #ffe600, 0 0 40px #ff3c00; }
+        }
+
+        /* RESPONSIVE REFINEMENTS */
+        @media (max-width: 768px) {
+            .content-card {
+                padding: 30px 18px;
+                border-radius: 22px;
+            }
+
+            .royal-tray {
+                padding: 28px 10px 18px;
+                border-radius: 34px;
+            }
+
+            .laddoo {
+                width: 42px;
+                height: 42px;
+            }
+
+            .exclusive-signature {
+                right: 50%;
+                transform: translateX(50%);
+                bottom: 14px;
+                white-space: nowrap;
+                letter-spacing: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient background layer -->
+    <div class="ambient-bg"></div>
+
+    <!-- Festive Toran (Marigold & Jasmine Garland) -->
+    <div class="festive-toran">
+        <span class="toran-flower">🌼</span>
+        <span class="toran-flower">🌸</span>
+        <span class="toran-flower">🪔</span>
+        <span class="toran-flower">🌼</span>
+        <span class="toran-flower">🌸</span>
+        <span class="toran-flower">🪔</span>
+        <span class="toran-flower">🌼</span>
+        <span class="toran-flower">🌸</span>
+        <span class="toran-flower">🪔</span>
+        <span class="toran-flower">🌼</span>
+        <span class="toran-flower">🌸</span>
+    </div>
+
+    <!-- Floating Sound & Music Controller -->
+    <button id="soundToggle" onclick="toggleSound()">
+        <span id="soundIcon">🔊</span>
+        <span id="soundLabel">Music: ON</span>
+    </button>
+
+    <!-- Sparkler & Touch Particle Canvas -->
+    <canvas id="sparklerCanvas"></canvas>
+
+
+    <!-- ==========================================================
+         PAGE 1: WELCOME SCREEN
+         ========================================================== -->
+    <section class="page active" id="welcome">
+        <div class="decor d-tl" onclick="popSparkles(event)">🪔</div>
+        <div class="decor d-tr" onclick="popSparkles(event)">✨</div>
+        <div class="decor d-bl" onclick="popSparkles(event)">🌸</div>
+        <div class="decor d-br" onclick="popSparkles(event)">💗</div>
+
+        <div class="content-card">
+            <div class="diya-wrapper">
+                <div class="diya-flame"></div>
+                <div class="diya-pot"></div>
+            </div>
+
+            <h1 class="festive-title">🪔 Shubh Deepawali 🪔</h1>
+            <h2 class="festive-subtitle">A Magical Surprise Awaits You 💖</h2>
+
+            <p class="wishes-text typewriter" data-text="Welcome to a celestial celebration of lights, divine blessings, and endless joy.
+May your journey through this festival fill your heart with sparkling warmth, sweetness, and cherished memories.
+
+A special Diwali surprise has been crafted with all our love, just for you! ✨"></p>
+
+            <button class="btn-celebrate btn-enter" onclick="startFireworksShow('sky', '✨ Sky-Shot Fireworks! ✨', 'wishes')">
+                ✨ ENTER CELEBRATION ✨
+            </button>
+        </div>
+    </section>
+
+
+    <!-- ==========================================================
+         PAGE 2: HEARTIEST DIWALI WISHES
+         ========================================================== -->
+    <section class="page" id="wishes">
+        <div class="decor d-tl" onclick="popSparkles(event)">🪔</div>
+        <div class="decor d-tr" onclick="popSparkles(event)">💖</div>
+        <div class="decor d-bl" onclick="popSparkles(event)">✨</div>
+        <div class="decor d-br" onclick="popSparkles(event)">🌸</div>
+
+        <div class="content-card">
+            <div class="diya-wrapper">
+                <div class="diya-flame"></div>
+                <div class="diya-pot"></div>
+            </div>
+
+            <h1 class="festive-title">💖 Heartiest Diwali Wishes 💖</h1>
+
+            <p class="wishes-text typewriter" data-text="May this Diwali fill your life with happiness, prosperity, success and endless beautiful memories.
+
+May every glowing diya illuminate your path with divine grace,
+May every crackling spark ignite your highest aspirations,
+And may your heart forever radiate peace, laughter and love! 🪔✨"></p>
+
+            <button class="btn-celebrate" onclick="startFireworksShow('flower', '🌸 Sparkling Flower-Pot! 🌸', 'sweets')">
+                TASTE SWEET SURPRISES 🍬
+            </button>
+        </div>
+    </section>
+
+
+    <!-- ==========================================================
+         PAGE 3: DIWALI SWEETS (SINGLE LARGE TRAY OF 42+ LADDOOS)
+         ========================================================== -->
+    <section class="page" id="sweets">
+        <div class="decor d-tl" onclick="popSparkles(event)">✨</div>
+        <div class="decor d-tr" onclick="popSparkles(event)">🪔</div>
+        <div class="decor d-bl" onclick="popSparkles(event)">🍬</div>
+        <div class="decor d-br" onclick="popSparkles(event)">🍥</div>
+
+        <div class="content-card">
+            <h1 class="festive-title">🍬 Royal Diwali Sweets 🍬</h1>
+
+            <p class="wishes-text typewriter" data-text="Diwali is incomplete without the divine sweetness of traditional treats!
+Here is a grand, handcrafted royal golden tray brimming with 42 delicious festive laddoos, alongside classic delicacies made with love. 💛"></p>
+
+            <!-- IMPORTANT: ONE SINGLE LARGE GOLDEN TRAY CONTAINING AT LEAST 40 LADDOOS -->
+            <div class="tray-section">
+                <div class="royal-tray">
+                    <div class="royal-tray-header">👑 42 SHAHI BESAN & BOONDI LADDOOS 👑</div>
+                    <div class="laddoo-grid" id="royalLaddooGrid">
+                        <!-- 42 Laddoos injected dynamically with unique animations & interactions -->
+                    </div>
+                    <div class="tray-footer-note">✨ Tap any laddoo to taste the festive sweetness! ✨</div>
+                </div>
+            </div>
+
+            <!-- ACCOMPANYING CLASSIC SWEETS: JALEBI, GULAB JAMUN, KAJU KATLI -->
+            <div class="side-sweets-container">
+                <div class="sweet-card" onclick="sampleSweet(event, 'Crisp Saffron Jalebi! 🍥')">
+                    <div class="sweet-icon-art">🍥</div>
+                    <div class="sweet-name">Kesar Jalebi</div>
+                    <div class="sweet-desc">Golden crisp spirals drenched in fragrant saffron-cardamom nectar.</div>
+                </div>
+
+                <div class="sweet-card" onclick="sampleSweet(event, 'Royal Gulab Jamun! 🍡')">
+                    <div class="sweet-icon-art">🍡</div>
+                    <div class="sweet-name">Gulab Jamun</div>
+                    <div class="sweet-desc">Melt-in-mouth dumplings immersed in warm rose-scented syrup.</div>
+                </div>
+
+                <div class="sweet-card" onclick="sampleSweet(event, 'Shahi Kaju Katli! ⬜')">
+                    <div class="sweet-icon-art">💎</div>
+                    <div class="sweet-name">Kaju Katli</div>
+                    <div class="sweet-desc">Imperial diamond cashew delight adorned with pure silver varq.</div>
+                </div>
+            </div>
+
+            <button class="btn-celebrate" onclick="startFireworksShow('bomb', '💥 Rapid Auto-Bomb Crackers! 💥', 'gifts')">
+                OPEN SPECIAL GIFTS 🎁
+            </button>
+        </div>
+    </section>
+
+
+    <!-- ==========================================================
+         PAGE 4: FOUR SPECIAL GIFTS
+         ========================================================== -->
+    <section class="page" id="gifts">
+        <div class="decor d-tl" onclick="popSparkles(event)">💝</div>
+        <div class="decor d-tr" onclick="popSparkles(event)">✨</div>
+        <div class="decor d-bl" onclick="popSparkles(event)">🧸</div>
+        <div class="decor d-br" onclick="popSparkles(event)">🥼</div>
+
+        <div class="content-card">
+            <h1 class="festive-title">🎁 Four Special Gifts For You 🎁</h1>
+
+            <p class="wishes-text typewriter" data-text="Four wonderful gift hampers have been chosen specially for you.
+Tap each beautiful gift box to unwrap the magic inside! 💖"></p>
+
+            <div class="gifts-grid">
+                <!-- Gift 1: Cute Teddy Bear -->
+                <div class="gift-box-card" id="giftCard1" onclick="unwrapGift(1)">
+                    <div class="gift-tag">Surprise 1</div>
+                    <div class="gift-box-visual" id="giftVisual1">🎁</div>
+                    <div class="gift-tap-hint" id="giftHint1">Tap To Unwrap 🧸</div>
+                    <div class="gift-revealed-content" id="giftRev1">
+                        <div style="font-size: 3.5rem; margin-bottom: 8px;">🧸</div>
+                        <div class="gift-title-rev">Cute Teddy Bear</div>
+                        <div class="gift-text-rev">A cuddly little friend to bring the sweetest smiles and infinite warmth to your heart always! 💗</div>
+                    </div>
+                </div>
+
+                <!-- Gift 2: Colourful Diwali Crackers -->
+                <div class="gift-box-card" id="giftCard2" onclick="unwrapGift(2)">
+                    <div class="gift-tag">Surprise 2</div>
+                    <div class="gift-box-visual" id="giftVisual2">🎁</div>
+                    <div class="gift-tap-hint" id="giftHint2">Tap To Unwrap 🎆</div>
+                    <div class="gift-revealed-content" id="giftRev2">
+                        <div style="font-size: 3.5rem; margin-bottom: 8px;">🎆🎇</div>
+                        <div class="gift-title-rev">Sparkling Crackers</div>
+                        <div class="gift-text-rev">May your life sparkle like vivid sky-shots and shine brighter than a thousand dazzling stars! ✨</div>
+                    </div>
+                </div>
+
+                <!-- Gift 3: Doctor Dream Gift -->
+                <div class="gift-box-card" id="giftCard3" onclick="unwrapGift(3)">
+                    <div class="gift-tag">Surprise 3</div>
+                    <div class="gift-box-visual" id="giftVisual3">🎁</div>
+                    <div class="gift-tap-hint" id="giftHint3">Tap To Unwrap 🩺</div>
+                    <div class="gift-revealed-content" id="giftRev3">
+                        <div style="font-size: 3.5rem; margin-bottom: 8px;">🥼🩺💊</div>
+                        <div class="gift-title-rev">Doctor Dream Gift</div>
+                        <div class="gift-text-rev">A stethoscope, white apron & medical kit! May your noble dream come true and may you heal the world with love and compassion! ❤️</div>
+                    </div>
+                </div>
+
+                <!-- Gift 4: Special Wishes for User & Family -->
+                <div class="gift-box-card" id="giftCard4" onclick="unwrapGift(4)">
+                    <div class="gift-tag">Surprise 4</div>
+                    <div class="gift-box-visual" id="giftVisual4">🎁</div>
+                    <div class="gift-tap-hint" id="giftHint4">Tap To Unwrap 💖</div>
+                    <div class="gift-revealed-content" id="giftRev4">
+                        <div style="font-size: 3.5rem; margin-bottom: 8px;">👨‍👩‍👧‍👦🪔</div>
+                        <div class="gift-title-rev">Family Blessings</div>
+                        <div class="gift-text-rev">Heartfelt prayers for you and your beloved family: endless health, unity, harmony and divine abundance! 🌸</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-celebrate" id="grandFinaleBtn" onclick="startFireworksShow('finale', '🎆 SPECTACULAR GRAND FINALE! 🎆', 'final')">
+                ✨ WITNESS GRAND FINALE ✨
+            </button>
+        </div>
+    </section>
+
+
+    <!-- ==========================================================
+         PAGE 5: FINAL PAGE (SIGNATURE "BY MANO R" APPEARS STRICTLY HERE ONLY)
+         ========================================================== -->
+    <section class="page" id="final">
+        <div class="decor d-tl" onclick="popSparkles(event)">🪔</div>
+        <div class="decor d-tr" onclick="popSparkles(event)">💖</div>
+        <div class="decor d-bl" onclick="popSparkles(event)">✨</div>
+        <div class="decor d-br" onclick="popSparkles(event)">🌸</div>
+
+        <div class="content-card">
+            <div class="glowing-final-heart">💖</div>
+
+            <h1 class="festive-title">HAPPY DIWALI!</h1>
+
+            <h2 class="festive-subtitle">Wishing you and your family a lifetime of happiness, health, success and prosperity.</h2>
+
+            <p class="wishes-text typewriter" data-text="May the divine aura of this auspicious festival protect you always,
+May peace illuminate your home, and may every step you take lead to glorious triumph.
+
+Keep smiling, keep shining, and spread light wherever you go! 🪔✨"></p>
+
+            <button class="btn-celebrate" onclick="replayExperience()">
+                🔄 REPLAY CELEBRATION 💝
+            </button>
+        </div>
+
+        <!-- STRICT REQUIREMENT: The signature must appear ONLY on the final page! -->
+        <div class="exclusive-signature">BY MANO R ✨</div>
+    </section>
+
+
+    <!-- ==========================================================
+         FIREWORKS SHOW OVERLAY CANVAS & HEADING
+         ========================================================== -->
+    <div id="fireworksOverlay">
+        <canvas id="fireworksCanvas"></canvas>
+        <h1 id="fireworksHeading"></h1>
+    </div>
+
+
+    <!-- ==========================================================
+         JAVASCRIPT & WEB AUDIO API ENGINE
+         ========================================================== -->
+    <script>
+        /* ==========================================================
+           1. WEB AUDIO API SYNTHESIZER (100% SELF-CONTAINED & ZERO DEPENDENCIES)
+           ========================================================== */
+        let audioCtx = null;
+        let soundEnabled = true;
+        let bgMusicInterval = null;
+        let bgMusicActive = false;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContextClass();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById("soundToggle");
+            const icon = document.getElementById("soundIcon");
+            const label = document.getElementById("soundLabel");
+
+            if (soundEnabled) {
+                btn.classList.remove("muted");
+                icon.textContent = "🔊";
+                label.textContent = "Music: ON";
+                getAudioContext();
+                startAmbientFestiveMusic();
+            } else {
+                btn.classList.add("muted");
+                icon.textContent = "🔇";
+                label.textContent = "Sound: OFF";
+                stopAmbientFestiveMusic();
+            }
+        }
+
+        /* 1A. Soft Bubble Pop Sound For Every Typed Character */
+        function playBubbleSound() {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                // Playful musical bubble pop frequency ramp
+                const baseFreq = 420 + Math.random() * 160;
+                osc.frequency.setValueAtTime(baseFreq, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(baseFreq * 2.3, ctx.currentTime + 0.045);
+
+                gain.gain.setValueAtTime(0.045, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.05);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + 0.055);
+            } catch (e) {}
+        }
+
+        /* 1B. Cracker Explosion & Boom Sound */
+        function playCrackerExplosionSound(intensity = 1) {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                // Low-pass filtered noise buffer for realistic cracker explosion
+                const bufferSize = Math.floor(ctx.sampleRate * 0.22);
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.035));
+                }
+
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(950, ctx.currentTime);
+                filter.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.2);
+
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.35 * intensity, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+
+                noise.start();
+            } catch (e) {}
+        }
+
+        /* 1C. Cracker Launch Whistle */
+        function playRocketLaunchSound() {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(300, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1350, ctx.currentTime + 0.35);
+
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + 0.36);
+            } catch (e) {}
+        }
+
+        /* 1D. Flower-Pot Continuous Crackle Sizzle */
+        function playFlowerPotSizzleSound() {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                const bufferSize = Math.floor(ctx.sampleRate * 0.07);
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * 0.3;
+                }
+
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 3400 + Math.random() * 800;
+                filter.Q.value = 3.5;
+
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.085, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+
+                noise.start();
+            } catch (e) {}
+        }
+
+        /* 1E. Auto-Bomb Rapid Fire Cracker Burst */
+        function playRapidCrackerPop() {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                const bufferSize = Math.floor(ctx.sampleRate * 0.08);
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.015));
+                }
+
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1600 + Math.random() * 600;
+
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.22, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+
+                noise.start();
+            } catch (e) {}
+        }
+
+        /* 1F. Festive Magic Chime For Gifts & Sweets */
+        function playFestiveChime() {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                // Pentatonic bell arpeggio (C5, E5, G5, B5, C6)
+                const freqs = [523.25, 659.25, 783.99, 987.77, 1046.50];
+                freqs.forEach((f, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+
+                    osc.type = 'triangle';
+                    osc.frequency.value = f;
+
+                    const startTime = ctx.currentTime + idx * 0.06;
+                    gain.gain.setValueAtTime(0.12, startTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.6);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start(startTime);
+                    osc.stop(startTime + 0.65);
+                });
+            } catch (e) {}
+        }
+
+        /* 1G. Ambient Indian Classical Pentatonic Flute Melody (Bhoopali Raga) */
+        function startAmbientFestiveMusic() {
+            if (bgMusicActive || !soundEnabled) return;
+            bgMusicActive = true;
+            const ctx = getAudioContext();
+
+            // Notes of Bhoopali / Mohanam: Sa, Re, Ga, Pa, Dha
+            const ragaNotes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
+            let noteIndex = 0;
+
+            bgMusicInterval = setInterval(() => {
+                if (!soundEnabled || !bgMusicActive) return;
+                try {
+                    const freq = ragaNotes[noteIndex % ragaNotes.length];
+                    noteIndex = (noteIndex + (Math.random() > 0.35 ? 1 : 2)) % ragaNotes.length;
+
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+                    gain.gain.setValueAtTime(0.038, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.25);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start();
+                    osc.stop(ctx.currentTime + 1.3);
+                } catch (e) {}
+            }, 700);
+        }
+
+        function stopAmbientFestiveMusic() {
+            bgMusicActive = false;
+            if (bgMusicInterval) {
+                clearInterval(bgMusicInterval);
+                bgMusicInterval = null;
+            }
+        }
+
+        // Initialize audio context on first user pointerdown anywhere
+        window.addEventListener("pointerdown", function initAudioOnGesture() {
+            getAudioContext();
+            if (soundEnabled && !bgMusicActive) {
+                startAmbientFestiveMusic();
+            }
+            window.removeEventListener("pointerdown", initAudioOnGesture);
+        }, { once: true });
+
+
+        /* ==========================================================
+           2. SPARKLER TOUCH & POINTER TRAIL
+           ========================================================== */
+        const sCanvas = document.getElementById("sparklerCanvas");
+        const sCtx = sCanvas.getContext("2d");
+        let sWidth, sHeight;
+        let sparkles = [];
+
+        function resizeSparklerCanvas() {
+            sWidth = sCanvas.width = window.innerWidth;
+            sHeight = sCanvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeSparklerCanvas);
+        resizeSparklerCanvas();
+
+        function addSparklerParticles(x, y, count = 4) {
+            const colors = ["#ffe28a", "#ffca28", "#ffffff", "#ff9800", "#ff4081"];
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 2.8 + 0.6;
+                sparkles.push({
+                    x, y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 0.4,
+                    alpha: 1,
+                    size: Math.random() * 2.8 + 1,
+                    color: colors[Math.floor(Math.random() * colors.length)]
+                });
+            }
+        }
+
+        window.addEventListener("pointermove", (e) => {
+            addSparklerParticles(e.clientX, e.clientY, 2);
+        });
+
+        window.addEventListener("pointerdown", (e) => {
+            addSparklerParticles(e.clientX, e.clientY, 7);
+        });
+
+        function animateSparklerTrail() {
+            sCtx.clearRect(0, 0, sWidth, sHeight);
+            for (let i = sparkles.length - 1; i >= 0; i--) {
+                const p = sparkles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.045; // slight gravity
+                p.alpha -= 0.024;
+
+                if (p.alpha <= 0) {
+                    sparkles.splice(i, 1);
+                    continue;
+                }
+
+                sCtx.globalAlpha = p.alpha;
+                sCtx.fillStyle = p.color;
+                sCtx.beginPath();
+                sCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                sCtx.fill();
+            }
+            sCtx.globalAlpha = 1;
+            requestAnimationFrame(animateSparklerTrail);
+        }
+        animateSparklerTrail();
+
+        function popSparkles(e) {
+            addSparklerParticles(e.clientX, e.clientY, 16);
+            playFestiveChime();
+        }
+
+
+        /* ==========================================================
+           3. ANIMATED TYPEWRITER WITH STETHOSCOPE CURSOR, BUBBLE SOUND & HAPTICS
+           ========================================================== */
+        let activeTypingTimers = [];
+
+        function cancelActiveTyping() {
+            activeTypingTimers.forEach(t => clearTimeout(t));
+            activeTypingTimers = [];
+        }
+
+        function runTypewriterOnPage(page) {
+            cancelActiveTyping();
+
+            const typewriterElements = page.querySelectorAll(".typewriter");
+
+            typewriterElements.forEach(el => {
+                const fullText = el.getAttribute("data-text") || el.textContent;
+                el.innerHTML = "";
+
+                // Create text container and stethoscope cursor
+                const textSpan = document.createElement("span");
+                textSpan.className = "typed-text-content";
+
+                const cursorSpan = document.createElement("span");
+                cursorSpan.className = "stetho-cursor";
+                cursorSpan.textContent = "🩺";
+
+                el.appendChild(textSpan);
+                el.appendChild(cursorSpan);
+
+                let charIndex = 0;
+
+                function typeNextChar() {
+                    if (!page.classList.contains("active")) return;
+
+                    if (charIndex < fullText.length) {
+                        const char = fullText.charAt(charIndex);
+                        textSpan.textContent += char;
+                        charIndex++;
+
+                        // Play soft bubble sound on non-space characters
+                        if (char !== " " && char !== "\n") {
+                            playBubbleSound();
+
+                            // Gentle mobile vibration every 4 characters if supported
+                            if (charIndex % 4 === 0 && navigator.vibrate) {
+                                try { navigator.vibrate(12); } catch (e) {}
+                            }
+                        }
+
+                        const delay = char === "\n" ? 180 : (char === "." || char === "!" ? 120 : 26);
+                        const timer = setTimeout(typeNextChar, delay);
+                        activeTypingTimers.push(timer);
+                    } else {
+                        // Finished typing: keep cursor gently pulsing
+                        cursorSpan.style.opacity = "0.9";
+                    }
+                }
+
+                typeNextChar();
+            });
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll(".page").forEach(p => {
+                p.classList.remove("active");
+            });
+
+            const targetPage = document.getElementById(pageId);
+            if (!targetPage) return;
+
+            targetPage.classList.add("active");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Start typing only when page opens!
+            runTypewriterOnPage(targetPage);
+        }
+
+
+        /* ==========================================================
+           4. DIWALI SWEETS: INJECT 42 ROYAL LADDOOS INSIDE SINGLE LARGE TRAY
+           ========================================================== */
+        const laddooGrid = document.getElementById("royalLaddooGrid");
+        const TOTAL_LADDOOS = 42; // Strictly >= 40 inside ONE single large tray!
+
+        for (let i = 1; i <= TOTAL_LADDOOS; i++) {
+            const laddoo = document.createElement("div");
+            laddoo.className = "laddoo";
+            laddoo.title = `Royal Laddoo #${i} (Tap to taste!)`;
+            laddoo.style.animationDelay = (Math.random() * 2.5).toFixed(2) + "s";
+
+            laddoo.addEventListener("pointerdown", (e) => {
+                addSparklerParticles(e.clientX, e.clientY, 12);
+                playFestiveChime();
+
+                // Gentle wobble effect
+                laddoo.style.transform = "scale(1.4) translateY(-10px) rotate(8deg)";
+                setTimeout(() => {
+                    laddoo.style.transform = "";
+                }, 240);
+
+                if (navigator.vibrate) {
+                    try { navigator.vibrate(18); } catch (err) {}
+                }
+            });
+
+            laddooGrid.appendChild(laddoo);
+        }
+
+        function sampleSweet(e, name) {
+            addSparklerParticles(e.clientX, e.clientY, 15);
+            playFestiveChime();
+        }
+
+
+        /* ==========================================================
+           5. FOUR SPECIAL GIFTS SYSTEM
+           ========================================================== */
+        const openedGifts = new Set();
+
+        function unwrapGift(giftNum) {
+            if (openedGifts.has(giftNum)) return;
+
+            openedGifts.add(giftNum);
+            playFestiveChime();
+
+            const card = document.getElementById(`giftCard${giftNum}`);
+            const visual = document.getElementById(`giftVisual${giftNum}`);
+            const hint = document.getElementById(`giftHint${giftNum}`);
+            const revealed = document.getElementById(`giftRev${giftNum}`);
+
+            card.classList.add("opened");
+            visual.style.display = "none";
+            hint.style.display = "none";
+            revealed.style.display = "block";
+
+            // Sparkle explosion around the gift card
+            const rect = card.getBoundingClientRect();
+            addSparklerParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 25);
+
+            if (navigator.vibrate) {
+                try { navigator.vibrate([25, 40, 30]); } catch (e) {}
+            }
+        }
+
+
+        /* ==========================================================
+           6. HIGH-DPI CANVAS FIREWORKS ENGINE:
+              SKY-SHOTS, FLOWER-POT (ANAAR), AUTO-BOMB, & GRAND FINALE
+           ========================================================== */
+        const fCanvas = document.getElementById("fireworksCanvas");
+        const fCtx = fCanvas.getContext("2d");
+        const fScreen = document.getElementById("fireworksOverlay");
+        const fHeading = document.getElementById("fireworksHeading");
+
+        let fWidth, fHeight, fDpr;
+        let fParticles = [];
+        let fRockets = [];
+        let fHearts = [];
+        let fConfetti = [];
+        let fMode = "sky";
+        let fAnimId = null;
+        let fShowTimeout = null;
+        let fHeadingTimeout = null;
+
+        function resizeFireworksCanvas() {
+            fWidth = window.innerWidth;
+            fHeight = window.innerHeight;
+            fDpr = Math.min(window.devicePixelRatio || 1, 2);
+
+            fCanvas.width = Math.round(fWidth * fDpr);
+            fCanvas.height = Math.round(fHeight * fDpr);
+
+            fCanvas.style.width = fWidth + "px";
+            fCanvas.style.height = fHeight + "px";
+
+            fCtx.setTransform(fDpr, 0, 0, fDpr, 0, 0);
+        }
+        window.addEventListener("resize", resizeFireworksCanvas);
+        resizeFireworksCanvas();
+
+        const fireworkColors = [
+            "#ff3366", "#ffd700", "#00ffcc",
+            "#ff9900", "#33ccff", "#ffffff",
+            "#ff0055", "#7000ff", "#ffe082"
+        ];
+
+        function getRandomColor() {
+            return fireworkColors[Math.floor(Math.random() * fireworkColors.length)];
+        }
+
+        /* Explosion burst */
+        function explodeShell(x, y, customCount = null, customColor = null) {
+            playCrackerExplosionSound();
+            const color = customColor || getRandomColor();
+            const count = customCount || (fMode === "finale" ? 95 : 65);
+
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5.5 + 1.2;
+                fParticles.push({
+                    x, y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    alpha: 1,
+                    color,
+                    size: Math.random() * 3.2 + 1.2,
+                    decay: Math.random() * 0.012 + 0.014
+                });
+            }
+
+            // In finale: add floating hearts & confetti!
+            if (fMode === "finale") {
+                for (let i = 0; i < 4; i++) {
+                    fHearts.push({
+                        x, y,
+                        vx: (Math.random() - 0.5) * 3,
+                        vy: -Math.random() * 2.5 - 1,
+                        alpha: 1,
+                        size: Math.random() * 18 + 14
+                    });
+                }
+                for (let i = 0; i < 20; i++) {
+                    fConfetti.push({
+                        x, y,
+                        vx: (Math.random() - 0.5) * 6,
+                        vy: (Math.random() - 0.5) * 6 - 2,
+                        color: getRandomColor(),
+                        size: Math.random() * 6 + 3,
+                        rotation: Math.random() * 360,
+                        alpha: 1
+                    });
+                }
+            }
+        }
+
+        function createSkyRocket() {
+            playRocketLaunchSound();
+            fRockets.push({
+                x: Math.random() * (fWidth * 0.8) + (fWidth * 0.1),
+                y: fHeight + 10,
+                targetY: Math.random() * (fHeight * 0.45) + (fHeight * 0.1),
+                speed: Math.random() * 4 + 7,
+                color: getRandomColor()
+            });
+        }
+
+        /* Flower-Pot / Anaar Fountain */
+        function spawnFlowerPotSparks() {
+            playFlowerPotSizzleSound();
+            const originX = fWidth / 2;
+            const originY = fHeight - 20;
+
+            for (let i = 0; i < 9; i++) {
+                const angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.65; // Upward cone
+                const speed = Math.random() * 12 + 6;
+                fParticles.push({
+                    x: originX + (Math.random() - 0.5) * 20,
+                    y: originY,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    alpha: 1,
+                    color: Math.random() > 0.3 ? "#ffd700" : (Math.random() > 0.5 ? "#ff9500" : "#ffffff"),
+                    size: Math.random() * 3 + 1.2,
+                    decay: Math.random() * 0.018 + 0.016
+                });
+            }
+        }
+
+        /* Auto-Bomb Crackers Sequence (Rapid Burst Chain) */
+        function spawnAutoBombCracker() {
+            playRapidCrackerPop();
+            const bx = Math.random() * (fWidth * 0.7) + (fWidth * 0.15);
+            const by = Math.random() * (fHeight * 0.55) + (fHeight * 0.25);
+
+            explodeShell(bx, by, 38);
+
+            // Add rapid flash
+            fCtx.fillStyle = "rgba(255, 230, 150, 0.25)";
+            fCtx.fillRect(0, 0, fWidth, fHeight);
+        }
+
+        function loopFireworks() {
+            // Dark trail buffer
+            fCtx.fillStyle = "rgba(4, 1, 8, 0.22)";
+            fCtx.fillRect(0, 0, fWidth, fHeight);
+
+            // 1. Sky-shot mode
+            if (fMode === "sky") {
+                if (Math.random() < 0.09) createSkyRocket();
+            }
+
+            // 2. Flower-pot mode (Anaar)
+            else if (fMode === "flower") {
+                spawnFlowerPotSparks();
+                // Draw earthen Anaar pot base at bottom center
+                fCtx.fillStyle = "#8a3311";
+                fCtx.beginPath();
+                fCtx.moveTo(fWidth / 2 - 25, fHeight - 10);
+                fCtx.lineTo(fWidth / 2 + 25, fHeight - 10);
+                fCtx.lineTo(fWidth / 2 + 10, fHeight - 35);
+                fCtx.lineTo(fWidth / 2 - 10, fHeight - 35);
+                fCtx.closePath();
+                fCtx.fill();
+            }
+
+            // 3. Auto-bomb mode
+            else if (fMode === "bomb") {
+                if (Math.random() < 0.32) spawnAutoBombCracker();
+            }
+
+            // 4. Grand Finale mode
+            else if (fMode === "finale") {
+                if (Math.random() < 0.22) createSkyRocket();
+                if (Math.random() < 0.18) spawnAutoBombCracker();
+            }
+
+            // Animate Rockets
+            for (let i = fRockets.length - 1; i >= 0; i--) {
+                const r = fRockets[i];
+                r.y -= r.speed;
+
+                fCtx.beginPath();
+                fCtx.arc(r.x, r.y, 3, 0, Math.PI * 2);
+                fCtx.fillStyle = r.color;
+                fCtx.fill();
+
+                if (r.y <= r.targetY) {
+                    explodeShell(r.x, r.y);
+                    fRockets.splice(i, 1);
+                }
+            }
+
+            // Animate Particles
+            for (let i = fParticles.length - 1; i >= 0; i--) {
+                const p = fParticles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.065; // Gravity
+                p.alpha -= p.decay;
+
+                if (p.alpha <= 0) {
+                    fParticles.splice(i, 1);
+                    continue;
+                }
+
+                fCtx.globalAlpha = Math.max(0, p.alpha);
+                fCtx.beginPath();
+                fCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                fCtx.fillStyle = p.color;
+                fCtx.fill();
+            }
+
+            // Animate Floating Hearts (Finale)
+            for (let i = fHearts.length - 1; i >= 0; i--) {
+                const h = fHearts[i];
+                h.x += h.vx;
+                h.y += h.vy;
+                h.alpha -= 0.012;
+
+                if (h.alpha <= 0) {
+                    fHearts.splice(i, 1);
+                    continue;
+                }
+
+                fCtx.globalAlpha = Math.max(0, h.alpha);
+                fCtx.font = `${h.size}px serif`;
+                fCtx.fillText("💖", h.x, h.y);
+            }
+
+            // Animate Confetti (Finale)
+            for (let i = fConfetti.length - 1; i >= 0; i--) {
+                const c = fConfetti[i];
+                c.x += c.vx;
+                c.y += c.vy;
+                c.vy += 0.05;
+                c.rotation += 5;
+                c.alpha -= 0.01;
+
+                if (c.alpha <= 0) {
+                    fConfetti.splice(i, 1);
+                    continue;
+                }
+
+                fCtx.save();
+                fCtx.globalAlpha = Math.max(0, c.alpha);
+                fCtx.translate(c.x, c.y);
+                fCtx.rotate((c.rotation * Math.PI) / 180);
+                fCtx.fillStyle = c.color;
+                fCtx.fillRect(-c.size / 2, -c.size / 2, c.size, c.size * 0.6);
+                fCtx.restore();
+            }
+
+            fCtx.globalAlpha = 1;
+            fAnimId = requestAnimationFrame(loopFireworks);
+        }
+
+        /* FIREWORKS TRANSITION CONTROLLER */
+        function startFireworksShow(mode, title, nextPageId) {
+            cancelActiveTyping();
+
+            clearTimeout(fShowTimeout);
+            clearTimeout(fHeadingTimeout);
+            cancelAnimationFrame(fAnimId);
+
+            fParticles = [];
+            fRockets = [];
+            fHearts = [];
+            fConfetti = [];
+            fMode = mode;
+
+            fHeading.textContent = title;
+            fHeading.style.opacity = "1";
+            fHeading.style.transform = "scale(1)";
+
+            fScreen.style.display = "flex";
+            resizeFireworksCanvas();
+            fCtx.clearRect(0, 0, fWidth, fHeight);
+
+            loopFireworks();
+
+            // Initial immediate burst
+            if (mode === "flower") {
+                spawnFlowerPotSparks();
+            } else if (mode === "bomb") {
+                spawnAutoBombCracker();
+            } else {
+                createSkyRocket();
+                if (mode === "finale") {
+                    setTimeout(createSkyRocket, 200);
+                    setTimeout(createSkyRocket, 450);
+                }
+            }
+
+            /* REQUIREMENT: Display fireworks heading for EXACTLY 1.5 seconds, then disappear! */
+            fHeadingTimeout = setTimeout(() => {
+                fHeading.style.opacity = "0";
+                fHeading.style.transform = "scale(0.9)";
+            }, 1500);
+
+            /* REQUIREMENT: Continue fireworks animation for 4.0 seconds (5.0s for grand finale) */
+            const duration = mode === "finale" ? 5000 : 4000;
+
+            fShowTimeout = setTimeout(() => {
+                cancelAnimationFrame(fAnimId);
+                fScreen.style.display = "none";
+                showPage(nextPageId);
+            }, duration);
+        }
+
+
+        /* ==========================================================
+           7. REPLAY & INITIALIZATION
+           ========================================================== */
+        function replayExperience() {
+            clearTimeout(fShowTimeout);
+            clearTimeout(fHeadingTimeout);
+            cancelActiveTyping();
+            cancelAnimationFrame(fAnimId);
+
+            fScreen.style.display = "none";
+
+            // Reset gifts
+            openedGifts.clear();
+            for (let i = 1; i <= 4; i++) {
+                const card = document.getElementById(`giftCard${i}`);
+                const visual = document.getElementById(`giftVisual${i}`);
+                const hint = document.getElementById(`giftHint${i}`);
+                const rev = document.getElementById(`giftRev${i}`);
+
+                if (card) card.classList.remove("opened");
+                if (visual) visual.style.display = "block";
+                if (hint) hint.style.display = "block";
+                if (rev) rev.style.display = "none";
+            }
+
+            showPage("welcome");
+        }
+
+        // Initialize and begin welcome page typewriter as soon as DOM loads!
+        window.addEventListener("DOMContentLoaded", () => {
+            showPage("welcome");
+        });
+    </script>
+</body>
+</html>
